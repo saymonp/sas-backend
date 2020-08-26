@@ -1,6 +1,5 @@
 import express from "express";
 import routes from "./routes";
-import mongoose from "mongoose";
 
 import connect from "./connect";
 
