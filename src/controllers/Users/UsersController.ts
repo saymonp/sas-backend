@@ -4,6 +4,8 @@ import bcrypt from "bcrypt";
 
 import UserSchema from "../../models/User";
 
+import authConfig from "../../config/auth";
+
 class UsersController {
   async login(req: Request, res: Response) {
     const { email, password } = req.body;
@@ -23,7 +25,7 @@ class UsersController {
               {
                 id: user._id,
               },
-              "secret",
+              authConfig.secret,
               {
                 expiresIn: 86400,
               }

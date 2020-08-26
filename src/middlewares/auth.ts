@@ -1,5 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import authConfig from "../config/auth";
 
 export const authMiddleware = async (
   req: Request,
@@ -22,13 +23,10 @@ export const authMiddleware = async (
   if (!/^Bearer$/i.test(scheme))
     return res.status(401).send({ error: "Token malformatted" });
 
-  try {
-    const decodedToken: any = jwt.decode(token, { complete: true });
+  jwt.verify(token, authConfig.secret, (err, decoded: any) => {
+    if (err) return res.status(401).send({ error: "Token invalid" });
+    req.body.userId = decoded.id;
+  });
 
-    req.body.userId = decodedToken.payload.id;
-
-    return next();
-  } catch (err) {
-    return res.status(401).send({ error: "Token invalid" });
-  }
+  return next();
 };
