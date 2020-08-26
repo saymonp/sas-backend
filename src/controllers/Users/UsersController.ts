@@ -21,7 +21,7 @@ class UsersController {
             user: user,
             token: jwt.sign(
               {
-                id: user.user_id,
+                id: user._id,
               },
               "secret",
               {

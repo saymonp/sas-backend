@@ -25,8 +25,7 @@ export const authMiddleware = async (
     try {
         const decodedToken: any = jwt.decode(token, { complete: true });
 
-        req.body.userId = decodedToken.payload.sub;
-        req.body.userPermissions = decodedToken.payload.permissions;
+        req.body.userId = decodedToken.payload.id;
 
         return next();
     } catch (err) {
