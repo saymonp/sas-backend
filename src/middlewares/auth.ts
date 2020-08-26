@@ -2,33 +2,33 @@ import { Response, Request, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
 export const authMiddleware = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
-    const authHeader = req.headers.authorization;
+  const authHeader = req.headers.authorization;
 
-    if (!authHeader) {
-        return res.status(401).send({ error: "No token provided" });      
-    }
+  if (!authHeader) {
+    return res.status(401).send({ error: "No token provided" });
+  }
 
-    const parts = authHeader.split(" ");
+  const parts = authHeader.split(" ");
 
-    if (!(parts.length === 2))
-        return res.status(401).send({ error: "Token error" });
+  if (!(parts.length === 2))
+    return res.status(401).send({ error: "Token error" });
 
-    const [scheme, token] = parts;
+  const [scheme, token] = parts;
 
-    if (!/^Bearer$/i.test(scheme))
-        return res.status(401).send({ error: "Token malformatted" });
+  if (!/^Bearer$/i.test(scheme))
+    return res.status(401).send({ error: "Token malformatted" });
 
-    try {
-        const decodedToken: any = jwt.decode(token, { complete: true });
+  try {
+    const decodedToken: any = jwt.decode(token, { complete: true });
 
-        req.body.userId = decodedToken.payload.id;
+    req.body.userId = decodedToken.payload.id;
 
-        return next();
-    } catch (err) {
-        return res.status(401).send({ error: "Token invalid" });
-    }
+    return next();
+  } catch (err) {
+    return res.status(401).send({ error: "Token invalid" });
+  }
 };

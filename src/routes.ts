@@ -8,11 +8,15 @@ const routes = express.Router();
 
 routes.use(usersRoutes);
 
-routes.get("/api/v1/restricted", authMiddleware, (req: Request, res: Response) => {
+routes.get(
+  "/api/v1/restricted",
+  authMiddleware,
+  (req: Request, res: Response) => {
     res.send({
-        msg: "Your Access Token was successfully validated!",
-        userId: req.body.userId,
+      msg: "Your Access Token was successfully validated!",
+      userId: req.body.userId,
     });
-})
+  }
+);
 
 export default routes;
