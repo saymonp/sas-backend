@@ -2,7 +2,8 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const authConfig = {
-    secret: String(process.env.SECRET),
+  privateKey: String(process.env.PRIVATE_KEY),
+  publicKey: String(process.env.PUBLIC_KEY),
 };
 
 export default authConfig;
