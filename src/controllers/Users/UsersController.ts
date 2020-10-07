@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import fs from "fs";
 
 import UserSchema from "../../models/User";
 
@@ -19,15 +20,18 @@ class UsersController {
 
       bcrypt.compare(password, user.password, function (err, response) {
         if (response == true) {
+          const privateKey = fs.readFileSync(authConfig.privateKey, "utf8");
+
           return res.json({
             user: user,
             token: jwt.sign(
               {
                 id: user._id,
               },
-              authConfig.secret,
+              privateKey,
               {
-                expiresIn: 86400,
+                expiresIn: 300, // 5min
+                algorithm: "RS256", //SHA-256
               }
             ),
           });

@@ -118,3 +118,6 @@ dist
 # Database SQLite
 *.sqlite
 *.sqlite-journal
+
+# Keys
+*.key
