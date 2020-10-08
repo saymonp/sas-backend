@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import usersRoutes from "./controllers/Users/usersRoutes";
 
 import { authMiddleware } from "./middlewares/auth";
+import { ioConnection } from "./middlewares/ioConnection";
 
 const routes = express.Router();
 
@@ -18,5 +19,7 @@ routes.get(
     });
   }
 );
+
+routes.get("/api/v1/joinRoom", authMiddleware, ioConnection);
 
 export default routes;

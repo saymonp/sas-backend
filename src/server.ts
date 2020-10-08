@@ -1,19 +1,10 @@
-import express from "express";
-import routes from "./routes";
+import app from "./app";
 
-import connect from "./connect";
+import * as http from "http";
+import socketio from "socket.io";
 
-import * as dotenv from "dotenv";
-dotenv.config();
+const server = http.createServer(app).listen(process.env.PORT || 3333);
 
-const app = express();
+const io = socketio.listen(server, { origins: "*:*" });
 
-app.use(express.json());
-
-app.use(routes);
-
-const db: string = String(process.env.MONGO_DATABASE);
-
-connect(db);
-
-app.listen(process.env.PORT || 3333);
+app.set("io", io);
