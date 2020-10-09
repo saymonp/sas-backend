@@ -28,7 +28,7 @@ class MessagesController {
 
     try {
       const message = await MessageSchema.findOne({ _id: id, user_id: userId });
-      console.log(message);
+
       if (message) {
         const keyDec = decryptRSA(message.key);
         const messageDec = decrypt(message.hash, keyDec);
