@@ -5,7 +5,7 @@ import fs from "fs";
 
 import UserSchema from "../../models/User";
 
-import authConfig from "../../config/auth";
+import keysConfig from "../../config/key";
 
 class UsersController {
   async login(req: Request, res: Response) {
@@ -20,10 +20,14 @@ class UsersController {
 
       bcrypt.compare(password, user.password, function (err, response) {
         if (response == true) {
-          const privateKey = fs.readFileSync(authConfig.privateKey, "utf8");
+          const privateKey = fs.readFileSync(keysConfig.privateKey, "utf8");
+          const publicKey = fs.readFileSync(keysConfig.publicKey, "utf8");
 
           return res.json({
-            user: user,
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            publicKey: publicKey,
             token: jwt.sign(
               {
                 id: user._id,

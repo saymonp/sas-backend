@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import authConfig from "../config/auth";
+import authConfig from "../config/key";
 import fs from "fs";
 
 export const authMiddleware = async (
