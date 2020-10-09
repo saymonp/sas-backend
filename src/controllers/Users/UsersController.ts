@@ -23,7 +23,7 @@ class UsersController {
           const privateKey = fs.readFileSync(keysConfig.privateKey, "utf8");
           const publicKey = fs.readFileSync(keysConfig.publicKey, "utf8");
 
-          return res.json({
+          return res.status(200).json({
             _id: user._id,
             name: user.name,
             email: user.email,
@@ -64,7 +64,7 @@ class UsersController {
         password: hash,
       });
 
-      return res.json(user);
+      return res.status(201).json({ id: user._id });
     } catch (err) {
       return res.status(400).json({ error: "User registration failed" });
     }
