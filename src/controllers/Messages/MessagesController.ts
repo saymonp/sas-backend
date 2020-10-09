@@ -27,16 +27,15 @@ class MessagesController {
     const { userId } = req.body;
 
     try {
-      const message = await MessageSchema.findOne({ id, user_id: userId });
-
+      const message = await MessageSchema.findOne({ _id: id, user_id: userId });
+      console.log(message);
       if (message) {
         const keyDec = decryptRSA(message.key);
-        console.log(keyDec);
         const messageDec = decrypt(message.hash, keyDec);
 
-        console.log(messageDec);
-
         return res.status(200).json({ message: messageDec });
+      } else {
+        return res.status(400).json({ error: "Not Found" });
       }
     } catch (err) {
       return res.status(400).json({ error: "Show failed" });
