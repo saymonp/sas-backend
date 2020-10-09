@@ -13,4 +13,5 @@ export interface IMessage extends Document {
   };
   key: string;
   user_id: Schema.Types.ObjectId;
+  hash_validation: string;
 }

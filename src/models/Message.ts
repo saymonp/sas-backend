@@ -8,6 +8,7 @@ const MessageSchema = new mongoose.Schema({
   },
   key: { type: String, required: true },
   user_id: { type: Schema.Types.ObjectId, required: true, ref: "User" },
+  hash_validation: { type: String, required: true },
 });
 
 export default mongoose.model<IMessage>("Message", MessageSchema);

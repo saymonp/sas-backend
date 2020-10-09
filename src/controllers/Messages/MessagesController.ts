@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import crypto from "crypto";
 
 import MessageSchema from "../../models/Message";
 
@@ -7,13 +8,14 @@ import { decrypt } from "../../utils/crypt";
 
 class MessagesController {
   async create(req: Request, res: Response) {
-    const { hash, key, userId } = req.body;
+    const { hash, key, userId, hash_validation } = req.body;
 
     try {
       const message = await MessageSchema.create({
         hash,
         key,
         user_id: userId,
+        hash_validation,
       });
 
       return res.status(201).json({ id: message._id });
@@ -32,6 +34,15 @@ class MessagesController {
       if (message) {
         const keyDec = decryptRSA(message.key);
         const messageDec = decrypt(message.hash, keyDec);
+        console.log(messageDec);
+        if (
+          message.hash_validation !==
+          crypto.createHash("sha256").update(messageDec).digest("base64")
+        ) {
+          return res
+            .status(400)
+            .json({ error: "Data is either corrupt or it has tampered" });
+        }
 
         return res.status(200).json({ message: messageDec });
       } else {
